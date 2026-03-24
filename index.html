@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saqsi — Le quiz à questions infinies</title>
-    <meta name="description" content="Saqsi, l'app de quiz avec des questions infinies. 8 thèmes, classement mondial, défis entre amis. Disponible sur iPhone.">
+    <meta name="description" content="Saqsi, l'app de quiz avec des questions infinies. 10 thèmes, classement mondial, défis entre amis. Disponible sur iPhone.">
     <link rel="canonical" href="https://saqsi.site/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr_FR">
     <meta property="og:url" content="https://saqsi.site/">
     <meta property="og:title" content="Saqsi — Le quiz à questions infinies">
-    <meta property="og:description" content="Des milliers de questions. 8 thèmes. Un seul objectif : devenir le meilleur.">
+    <meta property="og:description" content="Des milliers de questions. 10 thèmes. Un seul objectif : devenir le meilleur.">
     <meta property="og:image" content="https://saqsi.site/saqsi.icon.png">
     <meta property="og:image:alt" content="Icône de l’app Saqsi">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Saqsi — Le quiz à questions infinies">
-    <meta name="twitter:description" content="Des milliers de questions. 8 thèmes. Un seul objectif : devenir le meilleur.">
+    <meta name="twitter:description" content="Des milliers de questions. 10 thèmes. Un seul objectif : devenir le meilleur.">
     <meta name="twitter:image" content="https://saqsi.site/saqsi.icon.png">
     <link rel="icon" type="image/png" href="saqsi.icon.png">
     <script type="application/ld+json">
@@ -23,7 +23,7 @@
         "@context": "https://schema.org",
         "@type": "MobileApplication",
         "name": "Saqsi",
-        "description": "App de quiz avec des questions infinies, 8 thèmes, classement mondial et défis entre amis.",
+        "description": "App de quiz avec des questions infinies, 10 thèmes, classement mondial et défis entre amis.",
         "applicationCategory": "GameApplication",
         "operatingSystem": "iOS",
         "offers": {
@@ -74,6 +74,14 @@
             --tech: #34BFD0;
             --tech-light: #6DD4E0;
             --tech-dark: #22939F;
+
+            --geo: #2E9E5E;
+            --geo-light: #5CC08A;
+            --geo-dark: #1E7A42;
+
+            --art: #E87840;
+            --art-light: #F0A070;
+            --art-dark: #C45E28;
         }
 
         html {
@@ -411,9 +419,9 @@
 
         .themes-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 52px 36px;
-            max-width: 720px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 48px 28px;
+            max-width: 820px;
             margin: 64px auto 0;
         }
 
@@ -839,7 +847,7 @@
                 <div class="hero-blob" style="width:260px;height:260px;background:var(--histoire);top:10%;right:28%;animation-delay:-3s"></div>
             </div>
             <div class="hero-bubbles" id="heroBubbles">
-                <div class="glass-bubble hb-1" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
+                <div class="glass-bubble hb-1" style="--c:var(--geo);--cl:var(--geo-light);--cd:var(--geo-dark)">
                     <span class="emoji">🌍</span>
                 </div>
                 <div class="glass-bubble hb-2" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)">
@@ -848,8 +856,8 @@
                 <div class="glass-bubble hb-3" style="--c:var(--musique);--cl:var(--musique-light);--cd:var(--musique-dark)">
                     <span class="emoji">🎵</span>
                 </div>
-                <div class="glass-bubble hb-4" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
-                    <span class="emoji">🎮</span>
+                <div class="glass-bubble hb-4" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
+                    <span class="emoji">⚽</span>
                 </div>
                 <div class="glass-bubble hb-5" style="--c:var(--culture);--cl:var(--culture-light);--cd:var(--culture-dark)">
                     <span class="emoji">📚</span>
@@ -863,7 +871,7 @@
                 <div class="glass-bubble hb-8" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
                     <span class="emoji">🏛️</span>
                 </div>
-                <div class="glass-bubble hb-9" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
+                <div class="glass-bubble hb-9" style="--c:var(--art);--cl:var(--art-light);--cd:var(--art-dark)">
                     <span class="emoji">🎨</span>
                 </div>
                 <div class="glass-bubble hb-10" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
@@ -877,7 +885,7 @@
                     <span class="hero-title">Saqsi.</span>
                     <span class="hero-tagline">Le quiz à questions infinies.</span>
                 </h1>
-                <p class="hero-desc">Des milliers de questions. 8 thèmes. Un seul objectif : devenir le meilleur.</p>
+                <p class="hero-desc">Des milliers de questions. 10 thèmes. Un seul objectif : devenir le meilleur.</p>
                 <div class="hero-cta-wrap">
                     <a href="#download" class="app-store-btn">
                         <svg viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -892,32 +900,32 @@
         <section class="themes centered">
             <span class="section-overline reveal">Thèmes</span>
             <h2 class="section-title reveal reveal-delay-1">Choisis ton terrain de jeu.</h2>
-            <p class="section-subtitle reveal reveal-delay-2">8 univers, des milliers de questions. Trouve ta spécialité ou explore-les tous.</p>
+            <p class="section-subtitle reveal reveal-delay-2">10 univers, des milliers de questions. Trouve ta spécialité ou explore-les tous.</p>
 
             <div class="themes-grid">
                 <div class="theme-item reveal reveal-delay-1">
+                    <div class="theme-bubble" style="--c:var(--geo);--cl:var(--geo-light);--cd:var(--geo-dark)">
+                        <span class="emoji">🌍</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--geo)">Géographie</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-2">
+                    <div class="theme-bubble" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)">
+                        <span class="emoji">🎬</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--cinema)">Cinéma</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-3">
+                    <div class="theme-bubble" style="--c:var(--musique);--cl:var(--musique-light);--cd:var(--musique-dark)">
+                        <span class="emoji">🎵</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--musique)">Musique</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-4">
                     <div class="theme-bubble" style="--c:var(--culture);--cl:var(--culture-light);--cd:var(--culture-dark)">
                         <span class="emoji">📚</span>
                     </div>
                     <span class="theme-label" style="--c:var(--culture)">Culture</span>
-                </div>
-                <div class="theme-item reveal reveal-delay-2">
-                    <div class="theme-bubble" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
-                        <span class="emoji">🧪</span>
-                    </div>
-                    <span class="theme-label" style="--c:var(--science)">Science</span>
-                </div>
-                <div class="theme-item reveal reveal-delay-3">
-                    <div class="theme-bubble" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
-                        <span class="emoji">⚽</span>
-                    </div>
-                    <span class="theme-label" style="--c:var(--sport)">Sport</span>
-                </div>
-                <div class="theme-item reveal reveal-delay-4">
-                    <div class="theme-bubble" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
-                        <span class="emoji">🏛️</span>
-                    </div>
-                    <span class="theme-label" style="--c:var(--histoire)">Histoire</span>
                 </div>
                 <div class="theme-item reveal reveal-delay-5">
                     <div class="theme-bubble" style="--c:var(--actualite);--cl:var(--actualite-light);--cd:var(--actualite-dark)">
@@ -926,16 +934,28 @@
                     <span class="theme-label" style="--c:var(--actualite)">Actualité</span>
                 </div>
                 <div class="theme-item reveal reveal-delay-6">
-                    <div class="theme-bubble" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)">
-                        <span class="emoji">🎬</span>
+                    <div class="theme-bubble" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
+                        <span class="emoji">🏛️</span>
                     </div>
-                    <span class="theme-label" style="--c:var(--cinema)">Cinéma</span>
+                    <span class="theme-label" style="--c:var(--histoire)">Histoire</span>
                 </div>
                 <div class="theme-item reveal reveal-delay-7">
-                    <div class="theme-bubble" style="--c:var(--musique);--cl:var(--musique-light);--cd:var(--musique-dark)">
-                        <span class="emoji">🎵</span>
+                    <div class="theme-bubble" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
+                        <span class="emoji">🧪</span>
                     </div>
-                    <span class="theme-label" style="--c:var(--musique)">Musique</span>
+                    <span class="theme-label" style="--c:var(--science)">Science</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-8">
+                    <div class="theme-bubble" style="--c:var(--art);--cl:var(--art-light);--cd:var(--art-dark)">
+                        <span class="emoji">🎨</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--art)">Art</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-8">
+                    <div class="theme-bubble" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
+                        <span class="emoji">⚽</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--sport)">Sport</span>
                 </div>
                 <div class="theme-item reveal reveal-delay-8">
                     <div class="theme-bubble" style="--c:var(--tech);--cl:var(--tech-light);--cd:var(--tech-dark)">
@@ -952,12 +972,12 @@
                 <div class="feature-text">
                     <span class="feature-tag ai">Intelligence Artificielle</span>
                     <h3 class="feature-heading">Des questions qui ne s'arrêtent jamais.</h3>
-                    <p class="feature-desc">Chaque partie est unique. L'IA génère des milliers de questions dans 8 thèmes différents pour que tu ne tombes jamais deux fois sur la même.</p>
+                    <p class="feature-desc">Chaque partie est unique. L'IA génère des milliers de questions dans 10 thèmes différents pour que tu ne tombes jamais deux fois sur la même.</p>
                 </div>
                 <div class="feature-phone">
                     <div class="phone-mockup">
                         <div class="phone-screen">
-                            <img src="FRENCH.TOPIC.png" alt="Écran de sélection des thèmes Saqsi" loading="lazy">
+                            <img src="quizscreenfr.PNG" alt="Écran de quiz Saqsi" loading="lazy">
                         </div>
                     </div>
                 </div>
