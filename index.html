@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saqsi — Le quiz à questions infinies</title>
+    <meta name="description" content="Saqsi, l'app de quiz avec des questions infinies. 8 thèmes, classement mondial, défis entre amis. Disponible sur iPhone.">
+    <meta property="og:title" content="Saqsi — Le quiz à questions infinies">
+    <meta property="og:description" content="Des milliers de questions. 8 thèmes. Un seul objectif : devenir le meilleur.">
+    <meta property="og:image" content="saqsi.icon.png">
+    <link rel="icon" type="image/png" href="saqsi.icon.png">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        :root {
+            --bg: #F5F5F7;
+            --bg-white: #FFFFFF;
+            --text: #1D1D1F;
+            --text-secondary: #86868B;
+            --text-tertiary: #AEAEB2;
+
+            --culture: #9B7AEA;
+            --culture-light: #C4ACF6;
+            --culture-dark: #7450C0;
+
+            --science: #4A8FE7;
+            --science-light: #7DB3F2;
+            --science-dark: #2E6BBE;
+
+            --sport: #4CAF50;
+            --sport-light: #7ECB82;
+            --sport-dark: #357A38;
+
+            --histoire: #E6A532;
+            --histoire-light: #F2C468;
+            --histoire-dark: #C08620;
+
+            --actualite: #E05252;
+            --actualite-light: #EC8484;
+            --actualite-dark: #B83434;
+
+            --cinema: #E84393;
+            --cinema-light: #F27AB5;
+            --cinema-dark: #C02A76;
+
+            --musique: #8E6CC9;
+            --musique-light: #B49EDB;
+            --musique-dark: #6B48A8;
+
+            --tech: #34BFD0;
+            --tech-light: #6DD4E0;
+            --tech-dark: #22939F;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(245, 245, 247, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            box-shadow: 0 0.5px 0 rgba(0,0,0,0.08);
+        }
+
+        .nav-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+        }
+
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 22px;
+            border-radius: 980px;
+            background: var(--text);
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.04);
+            opacity: 0.88;
+        }
+
+        .nav-cta svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 160px 24px 40px;
+            overflow: hidden;
+        }
+
+        .hero-bubbles {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .hero-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 1.3s;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 8vw, 5.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 1.6s;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 1.9s;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-tertiary);
+            margin-bottom: 36px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 2.1s;
+        }
+
+        .hero-cta-wrap {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 2.3s;
+        }
+
+        .app-store-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 980px;
+            background: var(--text);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        }
+
+        .app-store-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .app-store-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .hero-sub {
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+        }
+
+        /* ── HERO BACKGROUND BLOBS ── */
+        .hero-blobs {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.18;
+            animation: blobDrift 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes blobDrift {
+            0%   { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(25px, -18px) scale(1.06); }
+        }
+
+        /* ── GLASS BUBBLE ── */
+        .glass-bubble {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 45%, var(--cl) 0%, var(--c) 42%, var(--cd) 100%);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            box-shadow:
+                0 4px 24px -4px var(--c),
+                0 12px 36px -8px rgba(0,0,0,0.12);
+            opacity: 0;
+            will-change: transform;
+            transition: opacity 0.35s ease;
+        }
+
+        .glass-bubble.settled {
+            filter: url(#glass-filter);
+        }
+
+        .glass-bubble::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse 55% 40% at 28% 18%,
+                    rgba(255,255,255,0.9) 0%,
+                    rgba(255,255,255,0.25) 35%,
+                    transparent 65%),
+                radial-gradient(ellipse 45% 25% at 65% 82%,
+                    rgba(255,255,255,0.12) 0%,
+                    transparent 65%),
+                linear-gradient(180deg,
+                    rgba(255,255,255,0.22) 0%,
+                    transparent 40%,
+                    rgba(0,0,0,0.05) 100%);
+            box-shadow:
+                inset 0 1px 2px rgba(255,255,255,0.65),
+                inset 0 -2px 6px rgba(0,0,0,0.08),
+                inset 0 0 0 1px rgba(255,255,255,0.15);
+            backdrop-filter: blur(2px) saturate(130%);
+            -webkit-backdrop-filter: blur(2px) saturate(130%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glass-bubble .emoji {
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+            line-height: 1;
+        }
+
+        @keyframes float-a {
+            0%,100% { transform: translateY(0) translateX(0); }
+            33%     { transform: translateY(-14px) translateX(6px); }
+            66%     { transform: translateY(8px) translateX(-4px); }
+        }
+
+        @keyframes float-b {
+            0%,100% { transform: translateY(0) translateX(0); }
+            25%     { transform: translateY(10px) translateX(-7px); }
+            50%     { transform: translateY(-12px) translateX(4px); }
+            75%     { transform: translateY(6px) translateX(-2px); }
+        }
+
+        @keyframes float-c {
+            0%,100% { transform: translateY(0) translateX(0); }
+            40%     { transform: translateY(-10px) translateX(-5px); }
+            70%     { transform: translateY(12px) translateX(6px); }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── SECTION BASE ── */
+        section {
+            padding: 120px 24px;
+        }
+
+        .section-overline {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 520px;
+            line-height: 1.6;
+        }
+
+        .centered {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ── THEMES SECTION ── */
+        .themes {
+            background: var(--bg-white);
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 52px 36px;
+            max-width: 720px;
+            margin: 64px auto 0;
+        }
+
+        .theme-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .theme-bubble {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6rem;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 45%, var(--cl) 0%, var(--c) 42%, var(--cd) 100%);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            box-shadow:
+                0 4px 24px -4px var(--c),
+                0 12px 36px -8px rgba(0,0,0,0.12);
+            filter: url(#glass-filter);
+            cursor: pointer;
+            transition:
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease,
+                filter 0.4s ease,
+                border-color 0.4s ease;
+        }
+
+        .theme-bubble::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse 55% 40% at 28% 18%,
+                    rgba(255,255,255,0.9) 0%,
+                    rgba(255,255,255,0.25) 35%,
+                    transparent 65%),
+                radial-gradient(ellipse 45% 25% at 65% 82%,
+                    rgba(255,255,255,0.12) 0%,
+                    transparent 65%),
+                linear-gradient(180deg,
+                    rgba(255,255,255,0.22) 0%,
+                    transparent 40%,
+                    rgba(0,0,0,0.05) 100%);
+            box-shadow:
+                inset 0 1px 2px rgba(255,255,255,0.65),
+                inset 0 -2px 6px rgba(0,0,0,0.08),
+                inset 0 0 0 1px rgba(255,255,255,0.15);
+            backdrop-filter: blur(2px) saturate(130%);
+            -webkit-backdrop-filter: blur(2px) saturate(130%);
+            pointer-events: none;
+            z-index: 1;
+            transition: backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease;
+        }
+
+        .theme-bubble:hover {
+            transform: scale(1.1);
+            filter: url(#glass-hover) brightness(1.06);
+            box-shadow:
+                0 6px 36px -2px var(--c),
+                0 16px 48px -8px rgba(0,0,0,0.16);
+            border-color: rgba(255,255,255,0.55);
+        }
+
+        .theme-bubble:hover::before {
+            backdrop-filter: blur(4px) saturate(160%) brightness(1.06);
+            -webkit-backdrop-filter: blur(4px) saturate(160%) brightness(1.06);
+        }
+
+        .theme-bubble .emoji {
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+            line-height: 1;
+            transition: transform 0.4s ease;
+        }
+
+        .theme-bubble:hover .emoji {
+            transform: scale(1.06);
+        }
+
+        .theme-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--c);
+        }
+
+        /* ── FEATURES SECTION ── */
+        .features {
+            background: var(--bg);
+        }
+
+        .feature-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+
+        .feature-row:not(:last-child) {
+            margin-bottom: 40px;
+        }
+
+        .feature-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .feature-text {
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 980px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag.ai       { background: rgba(155,122,234,0.12); color: var(--culture); }
+        .feature-tag.social    { background: rgba(232,67,147,0.12); color: var(--cinema); }
+        .feature-tag.compete   { background: rgba(230,165,50,0.12); color: var(--histoire); }
+
+        .feature-heading {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .feature-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .feature-phone {
+            flex-shrink: 0;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            background: #000;
+            border-radius: 44px;
+            padding: 10px;
+            box-shadow: 0 30px 80px -15px rgba(0,0,0,0.18);
+            position: relative;
+        }
+
+        .phone-screen {
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg);
+        }
+
+        .phone-screen img {
+            width: 100%;
+            display: block;
+        }
+
+        /* ── CTA SECTION ── */
+        .cta-section {
+            background: var(--bg-white);
+            text-align: center;
+            padding: 140px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section .section-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin-bottom: 16px;
+        }
+
+        .cta-section .section-subtitle {
+            margin: 0 auto 40px;
+        }
+
+        .cta-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .cta-mini-bubble {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 45%, var(--cl), var(--c), var(--cd));
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 16px -4px var(--c);
+        }
+
+        .cta-mini-bubble::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse 55% 40% at 28% 18%,
+                    rgba(255,255,255,0.8) 0%,
+                    rgba(255,255,255,0.2) 35%,
+                    transparent 65%),
+                linear-gradient(180deg, rgba(255,255,255,0.15), transparent 40%);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+        }
+
+        .cta-b1 { width: 60px; height: 60px; top: 15%; left: 8%; animation: float-a 7s ease-in-out infinite; }
+        .cta-b2 { width: 45px; height: 45px; top: 60%; right: 10%; animation: float-b 8s ease-in-out infinite; }
+        .cta-b3 { width: 36px; height: 36px; bottom: 20%; left: 15%; animation: float-c 6s ease-in-out infinite; }
+        .cta-b4 { width: 52px; height: 52px; top: 25%; right: 18%; animation: float-a 7.5s ease-in-out infinite; }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 48px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            background: var(--bg);
+        }
+
+        .footer-logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .footer-copy {
+            font-size: 0.82rem;
+            color: var(--text-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        /* ── REVEAL ANIMATION ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+        .reveal-delay-6 { transition-delay: 0.6s; }
+        .reveal-delay-7 { transition-delay: 0.7s; }
+        .reveal-delay-8 { transition-delay: 0.8s; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .feature-row {
+                gap: 48px;
+            }
+            .phone-mockup {
+                width: 240px;
+                border-radius: 38px;
+                padding: 8px;
+            }
+            .phone-screen {
+                border-radius: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 14px 20px;
+            }
+
+            .hero {
+                padding: 90px 20px 30px;
+            }
+
+            .hero-icon {
+                width: 90px;
+                height: 90px;
+                border-radius: 20px;
+                margin-bottom: 22px;
+            }
+
+            section {
+                padding: 80px 20px;
+            }
+
+            .themes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px 24px;
+                margin-top: 48px;
+            }
+
+            .theme-bubble {
+                width: 90px;
+                height: 90px;
+                font-size: 2.1rem;
+            }
+
+            .feature-row,
+            .feature-row.reverse {
+                flex-direction: column;
+                gap: 40px;
+                padding: 40px 0;
+            }
+
+            .feature-text {
+                text-align: center;
+                max-width: 100%;
+            }
+
+            .phone-mockup {
+                width: 240px;
+            }
+
+            .cta-section {
+                padding: 100px 20px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+                padding: 36px 20px;
+            }
+
+            .footer-links {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .themes-grid {
+                gap: 32px 16px;
+            }
+
+            .theme-bubble {
+                width: 78px;
+                height: 78px;
+                font-size: 1.8rem;
+            }
+
+            .phone-mockup {
+                width: 220px;
+                border-radius: 34px;
+                padding: 7px;
+            }
+
+            .phone-screen {
+                border-radius: 27px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="#" class="nav-logo"><img src="saqsi.icon.png" alt="Saqsi" class="nav-icon">Saqsi.</a>
+        <a href="#download" class="nav-cta">
+            <svg viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+            Télécharger
+        </a>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-blobs">
+                <div class="hero-blob" style="width:420px;height:420px;background:var(--culture);top:2%;left:18%"></div>
+                <div class="hero-blob" style="width:340px;height:340px;background:var(--sport);top:28%;right:10%;animation-delay:-5s"></div>
+                <div class="hero-blob" style="width:280px;height:280px;background:var(--cinema);top:45%;left:3%;animation-delay:-9s"></div>
+                <div class="hero-blob" style="width:260px;height:260px;background:var(--histoire);top:10%;right:28%;animation-delay:-3s"></div>
+            </div>
+            <div class="hero-bubbles" id="heroBubbles">
+                <div class="glass-bubble hb-1" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
+                    <span class="emoji">🌍</span>
+                </div>
+                <div class="glass-bubble hb-2" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)">
+                    <span class="emoji">🎬</span>
+                </div>
+                <div class="glass-bubble hb-3" style="--c:var(--musique);--cl:var(--musique-light);--cd:var(--musique-dark)">
+                    <span class="emoji">🎵</span>
+                </div>
+                <div class="glass-bubble hb-4" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
+                    <span class="emoji">🎮</span>
+                </div>
+                <div class="glass-bubble hb-5" style="--c:var(--culture);--cl:var(--culture-light);--cd:var(--culture-dark)">
+                    <span class="emoji">📚</span>
+                </div>
+                <div class="glass-bubble hb-6" style="--c:var(--actualite);--cl:var(--actualite-light);--cd:var(--actualite-dark)">
+                    <span class="emoji">📰</span>
+                </div>
+                <div class="glass-bubble hb-7" style="--c:var(--tech);--cl:var(--tech-light);--cd:var(--tech-dark)">
+                    <span class="emoji">💻</span>
+                </div>
+                <div class="glass-bubble hb-8" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
+                    <span class="emoji">🏛️</span>
+                </div>
+                <div class="glass-bubble hb-9" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
+                    <span class="emoji">🎨</span>
+                </div>
+                <div class="glass-bubble hb-10" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
+                    <span class="emoji">🧪</span>
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <img src="saqsi.icon.png" alt="Saqsi" class="hero-icon">
+                <h1 class="hero-title">Saqsi.</h1>
+                <p class="hero-tagline">Le quiz à questions infinies.</p>
+                <p class="hero-desc">Des milliers de questions. 8 thèmes. Un seul objectif : devenir le meilleur.</p>
+                <div class="hero-cta-wrap">
+                    <a href="#download" class="app-store-btn">
+                        <svg viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                        Télécharger sur l'App Store
+                    </a>
+                    <p class="hero-sub">Disponible gratuitement sur iPhone</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- THEMES -->
+        <section class="themes centered">
+            <span class="section-overline reveal">Thèmes</span>
+            <h2 class="section-title reveal reveal-delay-1">Choisis ton terrain de jeu.</h2>
+            <p class="section-subtitle reveal reveal-delay-2">8 univers, des milliers de questions. Trouve ta spécialité ou explore-les tous.</p>
+
+            <div class="themes-grid">
+                <div class="theme-item reveal reveal-delay-1">
+                    <div class="theme-bubble" style="--c:var(--culture);--cl:var(--culture-light);--cd:var(--culture-dark)">
+                        <span class="emoji">📚</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--culture)">Culture</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-2">
+                    <div class="theme-bubble" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)">
+                        <span class="emoji">🧪</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--science)">Science</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-3">
+                    <div class="theme-bubble" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)">
+                        <span class="emoji">⚽</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--sport)">Sport</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-4">
+                    <div class="theme-bubble" style="--c:var(--histoire);--cl:var(--histoire-light);--cd:var(--histoire-dark)">
+                        <span class="emoji">🏛️</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--histoire)">Histoire</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-5">
+                    <div class="theme-bubble" style="--c:var(--actualite);--cl:var(--actualite-light);--cd:var(--actualite-dark)">
+                        <span class="emoji">📰</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--actualite)">Actualité</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-6">
+                    <div class="theme-bubble" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)">
+                        <span class="emoji">🎬</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--cinema)">Cinéma</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-7">
+                    <div class="theme-bubble" style="--c:var(--musique);--cl:var(--musique-light);--cd:var(--musique-dark)">
+                        <span class="emoji">🎵</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--musique)">Musique</span>
+                </div>
+                <div class="theme-item reveal reveal-delay-8">
+                    <div class="theme-bubble" style="--c:var(--tech);--cl:var(--tech-light);--cd:var(--tech-dark)">
+                        <span class="emoji">💻</span>
+                    </div>
+                    <span class="theme-label" style="--c:var(--tech)">Tech</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="features">
+            <div class="feature-row reveal">
+                <div class="feature-text">
+                    <span class="feature-tag ai">Intelligence Artificielle</span>
+                    <h3 class="feature-heading">Des questions qui ne s'arrêtent jamais.</h3>
+                    <p class="feature-desc">Chaque partie est unique. L'IA génère des milliers de questions dans 8 thèmes différents pour que tu ne tombes jamais deux fois sur la même.</p>
+                </div>
+                <div class="feature-phone">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <img src="FRENCH.TOPIC.png" alt="Écran de sélection des thèmes Saqsi" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-row reverse reveal">
+                <div class="feature-text">
+                    <span class="feature-tag social">Multijoueur</span>
+                    <h3 class="feature-heading">Défie tes amis.</h3>
+                    <p class="feature-desc">Lance un défi sur le thème de ton choix. Score en temps réel, messagerie intégrée, et le droit de te vanter quand tu gagnes.</p>
+                </div>
+                <div class="feature-phone">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <img src="FRENCH.SOCIAL.png" alt="Écran social et défis Saqsi" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-row reveal">
+                <div class="feature-text">
+                    <span class="feature-tag compete">Compétition</span>
+                    <h3 class="feature-heading">Grimpe le classement.</h3>
+                    <p class="feature-desc">Gagne de l'XP à chaque bonne réponse, monte en niveau et vise la première place du classement mondial.</p>
+                </div>
+                <div class="feature-phone">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <img src="FRENCH.RANK.png" alt="Classement mondial Saqsi" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section" id="download">
+            <div class="cta-bubbles">
+                <div class="cta-mini-bubble cta-b1" style="--c:var(--culture);--cl:var(--culture-light);--cd:var(--culture-dark)"></div>
+                <div class="cta-mini-bubble cta-b2" style="--c:var(--sport);--cl:var(--sport-light);--cd:var(--sport-dark)"></div>
+                <div class="cta-mini-bubble cta-b3" style="--c:var(--cinema);--cl:var(--cinema-light);--cd:var(--cinema-dark)"></div>
+                <div class="cta-mini-bubble cta-b4" style="--c:var(--science);--cl:var(--science-light);--cd:var(--science-dark)"></div>
+            </div>
+            <h2 class="section-title reveal">Prêt à jouer ?</h2>
+            <p class="section-subtitle reveal reveal-delay-1">Télécharge Saqsi gratuitement et commence à tester tes connaissances dès maintenant.</p>
+            <div class="reveal reveal-delay-2">
+                <a href="#" class="app-store-btn">
+                    <svg viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                    Télécharger sur l'App Store
+                </a>
+                <p class="hero-sub">Disponible gratuitement sur iPhone</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-logo">Saqsi.</span>
+        <span class="footer-copy">&copy; 2026 Saqsi. Tous droits réservés.</span>
+        <ul class="footer-links">
+            <li><a href="#">Confidentialité</a></li>
+            <li><a href="#">Conditions</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        (function () {
+            /* ── Nav scroll effect ── */
+            const nav = document.getElementById('nav');
+            const onScroll = () => {
+                nav.classList.toggle('scrolled', window.scrollY > 40);
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            /* ── Hero parallax ── */
+            const heroBubbles = document.getElementById('heroBubbles');
+            const heroSection = document.querySelector('.hero');
+            let ticking = false;
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const scrollY = window.scrollY;
+                        const heroH = heroSection.offsetHeight;
+                        if (scrollY < heroH) {
+                            heroBubbles.style.transform = 'translateY(' + (scrollY * 0.35) + 'px)';
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            /* ── Physics simulation (gravity + collisions + stacking) ── */
+            (function physicsSim() {
+                var G = 0.34, BOUNCE = 0.42, FRIC = 0.984;
+                var sizes  = [110,88,80,95,120,68,76,100,90,72];
+                var delays = [0,160,320,480,640,800,960,1120,1280,1440];
+                var container = heroBubbles;
+                var els = container.querySelectorAll('.glass-bubble');
+                var s = window.innerWidth < 768 ? 0.58 : window.innerWidth < 1024 ? 0.78 : 1;
+
+                var bodies = [];
+                for (var i = 0; i < els.length; i++) {
+                    var sz = Math.round(sizes[i] * s);
+                    var r = sz / 2;
+                    els[i].style.width = sz + 'px';
+                    els[i].style.height = sz + 'px';
+                    els[i].style.fontSize = (sz * 0.024) + 'rem';
+                    bodies.push({ el: els[i], x: 0, y: 0, vx: 0, vy: 0, r: r, on: false, d: delays[i] });
+                }
+
+                var t0 = performance.now(), done = false;
+
+                function step() {
+                    var now = performance.now(), dt = now - t0;
+                    var W = container.offsetWidth, H = container.offsetHeight;
+                    var slow = true;
+
+                    for (var k = 0; k < bodies.length; k++) {
+                        var b = bodies[k];
+                        if (!b.on && dt >= b.d) {
+                            b.on = true;
+                            b.x = b.r + Math.random() * (W - b.r * 2);
+                            b.y = -b.r * 2 - Math.random() * 100;
+                            b.vx = (Math.random() - 0.5) * 2.5;
+                            b.vy = Math.random() * 1.5;
+                            b.el.style.opacity = '1';
+                        }
+                        if (!b.on) { slow = false; continue; }
+
+                        b.vy += G;
+                        b.vx *= FRIC;
+                        b.x += b.vx;
+                        b.y += b.vy;
+
+                        if (b.y + b.r > H) { b.y = H - b.r; b.vy *= -BOUNCE; b.vx *= 0.9; }
+                        if (b.x - b.r < 0) { b.x = b.r; b.vx *= -BOUNCE; }
+                        if (b.x + b.r > W) { b.x = W - b.r; b.vx *= -BOUNCE; }
+
+                        if (Math.abs(b.vx) > 0.12 || Math.abs(b.vy) > 0.12) slow = false;
+                    }
+
+                    for (var i = 0; i < bodies.length; i++) {
+                        if (!bodies[i].on) continue;
+                        for (var j = i + 1; j < bodies.length; j++) {
+                            if (!bodies[j].on) continue;
+                            var a = bodies[i], bb = bodies[j];
+                            var dx = bb.x - a.x, dy = bb.y - a.y;
+                            var d = Math.hypot(dx, dy);
+                            var mn = a.r + bb.r;
+                            if (d < mn && d > 0.01) {
+                                var nx = dx / d, ny = dy / d;
+                                var ov = mn - d;
+                                var tot = a.r + bb.r;
+                                var ar = bb.r / tot, br = a.r / tot;
+                                a.x -= nx * ov * ar;
+                                a.y -= ny * ov * ar;
+                                bb.x += nx * ov * br;
+                                bb.y += ny * ov * br;
+                                var rv = (a.vx - bb.vx) * nx + (a.vy - bb.vy) * ny;
+                                if (rv > 0) {
+                                    var imp = rv * (1 + BOUNCE) * 0.5;
+                                    a.vx -= imp * nx * ar;
+                                    a.vy -= imp * ny * ar;
+                                    bb.vx += imp * nx * br;
+                                    bb.vy += imp * ny * br;
+                                }
+                            }
+                        }
+                    }
+
+                    for (var k = 0; k < bodies.length; k++) {
+                        if (!bodies[k].on) continue;
+                        var b = bodies[k];
+                        b.el.style.transform = 'translate(' + (b.x - b.r) + 'px,' + (b.y - b.r) + 'px)';
+                    }
+
+                    if (slow && !done) {
+                        done = true;
+                        for (var k = 0; k < bodies.length; k++) bodies[k].el.classList.add('settled');
+                    }
+
+                    if (!done || now - t0 < 5000) requestAnimationFrame(step);
+                }
+
+                requestAnimationFrame(step);
+            })();
+
+            /* ── Intersection Observer for scroll reveals ── */
+            const revealEls = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealEls.forEach(el => observer.observe(el));
+        })();
+    </script>
+
+    <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+        <filter id="glass-filter" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="2" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="glass-hover" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="2" result="noise"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur"/>
+            <feDisplacementMap in="blur" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+</body>
+</html>
