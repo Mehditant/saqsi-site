@@ -1036,7 +1036,7 @@
                 <div class="feature-phone">
                     <div class="phone-mockup">
                         <div class="phone-screen">
-                            <img class="feature-shot" data-src-fr="quiz.english.png" data-src-en="quiz.english.png" src="quiz.english.png" alt="" data-i18n-alt="featQuizAlt" loading="lazy">
+                            <img class="feature-shot" data-src-fr="quizscreenfr.PNG" data-src-en="quiz.english.png" src="quizscreenfr.PNG" alt="" data-i18n-alt="featQuizAlt" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -1051,7 +1051,7 @@
                 <div class="feature-phone">
                     <div class="phone-mockup">
                         <div class="phone-screen">
-                            <img class="feature-shot" data-src-fr="social.english.png" data-src-en="social.english.png" src="social.english.png" alt="" data-i18n-alt="featSocialAlt" loading="lazy">
+                            <img class="feature-shot" data-src-fr="FRENCH.SOCIAL.png" data-src-en="social.english.png" src="FRENCH.SOCIAL.png" alt="" data-i18n-alt="featSocialAlt" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -1066,7 +1066,7 @@
                 <div class="feature-phone">
                     <div class="phone-mockup">
                         <div class="phone-screen">
-                            <img class="feature-shot" data-src-fr="leaderboard.english.png" data-src-en="leaderboard.english.png" src="leaderboard.english.png" alt="" data-i18n-alt="featRankAlt" loading="lazy">
+                            <img class="feature-shot" data-src-fr="FRENCH.RANK.png" data-src-en="leaderboard.english.png" src="FRENCH.RANK.png" alt="" data-i18n-alt="featRankAlt" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -1114,9 +1114,9 @@
         <span class="footer-logo">Saqsi.</span>
         <span class="footer-copy" data-i18n="footerCopy">&copy; 2026 Saqsi. Tous droits réservés.</span>
         <ul class="footer-links">
-            <li><a href="#" data-i18n="footerPrivacy">Confidentialité</a></li>
-            <li><a href="#" data-i18n="footerTerms">Conditions</a></li>
-            <li><a href="#" data-i18n="footerContact">Contact</a></li>
+            <li><a href="confidentialite.html" data-href-fr="confidentialite.html" data-href-en="privacy.html" data-i18n="footerPrivacy">Confidentialité</a></li>
+            <li><a href="conditions.html" data-href-fr="conditions.html" data-href-en="terms.html" data-i18n="footerTerms">Conditions</a></li>
+            <li><a href="mailto:mehdi@wewalkapp.co" data-i18n="footerContact">Contact</a></li>
         </ul>
     </footer>
 
@@ -1255,6 +1255,11 @@
                     var fr = img.getAttribute('data-src-fr');
                     var en = img.getAttribute('data-src-en');
                     img.src = lang === 'en' ? en : fr;
+                });
+                document.querySelectorAll('[data-href-fr][data-href-en]').forEach(function (el) {
+                    var hfr = el.getAttribute('data-href-fr');
+                    var hen = el.getAttribute('data-href-en');
+                    if (hfr && hen) el.setAttribute('href', lang === 'en' ? hen : hfr);
                 });
 
                 document.title = pack.docTitle;
